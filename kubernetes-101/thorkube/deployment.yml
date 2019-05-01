@@ -1,0 +1,26 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: thorkube
+#   thought of as a tagging mechanism
+  labels:
+    name: app
+spec:
+  replicas: 1
+  selector:
+  # matchLabels field describes what pods the deployment should apply to.
+    matchLabels:
+        pod: app
+  template:
+    metadata:
+    # labels field indicates what labels should be assigned to the running pod.
+    # This label is what is found by the matchLabels field in the deployment.
+        labels:
+            pod: app
+    spec:
+        containers:
+        - name: app
+          image: thorkube:0.1
+          ports:
+          - containerPort: 8000
+

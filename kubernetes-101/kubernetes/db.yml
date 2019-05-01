@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+  namespace: seakube-dev
+  labels:
+    app: db
+    env: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - name: seakube-db
+        image: postgres:latest
+        ports:
+        - containerPort: 5432
+
