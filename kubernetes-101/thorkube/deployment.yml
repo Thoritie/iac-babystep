@@ -19,8 +19,32 @@ spec:
             pod: app
     spec:
         containers:
-        - name: app
-          image: thorkube:0.1
-          ports:
-          - containerPort: 8000
+          - name: app
+            image: thorkube:1.0
+            ports:
+              - containerPort: 8000
+            env:
+              - name: POSTGRES_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-credentials
+                    key: user
+
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-credentials
+                    key: password
+
+              - name: POSTGRES_HOST
+                value: postgres-service
+
+            volumeMounts:
+              - name: postgres-volume-mount
+                mountPath: /var/lib/busybox
+
+        volumes:
+          - name: postgres-volume-mount
+            persistentVolumeClaim:
+              claimName: postgres-pvc
 
