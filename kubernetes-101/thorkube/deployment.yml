@@ -20,7 +20,7 @@ spec:
     spec:
         containers:
           - name: app
-            image: thorkube:1.0
+            image: thorkube:1.1
             ports:
               - containerPort: 8000
             env:
