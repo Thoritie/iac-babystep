@@ -1,6 +1,6 @@
 ---
 - name: provision nfs server
-  hosts: nfs
+  hosts: k8s-nfs
   become: True
   vars:
     hostname: "nfs-demo"
