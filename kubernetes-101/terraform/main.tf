@@ -1,7 +1,7 @@
 provider "aws" {
     access_key = "${var.access_id}"
     secret_key = "${var.secret_id}"
-    region     = "eu-west-1"
+    region     = "us-east-2"
 }
 
 resource "aws_vpc" "k8s_pronto_world_dev" {
@@ -19,7 +19,7 @@ resource "aws_subnet" "k8s_pronto_world_public_subnet_zone_a" {
     vpc_id = "${aws_vpc.k8s_pronto_world_dev.id}"
 
     assign_ipv6_address_on_creation = true
-    availability_zone               = "eu-west-1a"
+    availability_zone               = "us-east-2a"
     cidr_block                      = "10.30.8.0/24"
     ipv6_cidr_block                 = "${cidrsubnet(aws_vpc.k8s_pronto_world_dev.ipv6_cidr_block, 8, 0)}"
 
@@ -34,7 +34,7 @@ resource "aws_subnet" "k8s_pronto_world_public_subnet_zone_b" {
     vpc_id = "${aws_vpc.k8s_pronto_world_dev.id}"
 
     assign_ipv6_address_on_creation = true
-    availability_zone               = "eu-west-1b"
+    availability_zone               = "us-east-2b"
     cidr_block                      = "10.30.9.0/24"
     ipv6_cidr_block                 = "${cidrsubnet(aws_vpc.k8s_pronto_world_dev.ipv6_cidr_block, 8, 1)}"
 
@@ -49,7 +49,7 @@ resource "aws_subnet" "k8s_pronto_world_public_subnet_zone_c" {
     vpc_id = "${aws_vpc.k8s_pronto_world_dev.id}"
 
     assign_ipv6_address_on_creation = true
-    availability_zone               = "eu-west-1c"
+    availability_zone               = "us-east-2c"
     cidr_block                      = "10.30.10.0/24"
     ipv6_cidr_block                 = "${cidrsubnet(aws_vpc.k8s_pronto_world_dev.ipv6_cidr_block, 8, 2)}"
 
