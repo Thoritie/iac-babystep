@@ -1,5 +1,5 @@
 {
-    "baseUrl": "18.191.198.18:31000",
+    "baseUrl": "http://18.191.198.18:31000",
     "video": false,
     "viewportWidth": 1440,
     "viewportHeight": 900
