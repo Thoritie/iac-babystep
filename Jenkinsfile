@@ -116,7 +116,7 @@ pipeline {
                         dir('kubernetes-101/cypress') {	
                             sh 'npm install'
                             sh './node_modules/.bin/cypress install'
-                            sh "./node_modules/.bin/cypress run
+                            sh './node_modules/.bin/cypress run'
                         }	
                     }	
                 }	
