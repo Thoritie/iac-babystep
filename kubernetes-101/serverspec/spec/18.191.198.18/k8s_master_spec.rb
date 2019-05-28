@@ -34,13 +34,6 @@ describe command('kubectl get pod') do
   its(:stdout) { should match /nginx-deployment.*1\/1\s+Running/ }
 end
 
-describe command('kubectl get pv') do
-  its(:stdout) { should match /logs-pv.*RWX.*dev\/logs-pvc/ }
-  its(:stdout) { should match /postgres-pv.*RWX.*dev\/postgres-pvc/ }
-  its(:stdout) { should match /static-assets-pv.*RWX.*dev\/static-assets-pvc/ }
-  its(:stdout) { should match /static-media-pv.*RWX.*dev\/static-media-pvc/ }
-end
-
 describe command('kubectl get pvc') do
   its(:stdout) { should match /logs-pv.*logs-pv.*RWX/ }
   its(:stdout) { should match /postgres-pvc.*postgres-pv.*RWX/ }
