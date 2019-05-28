@@ -6,7 +6,7 @@ ENV APPLICATION_ROOT /app/
 RUN mkdir $APPLICATION_ROOT
 WORKDIR $APPLICATION_ROOT
 
-COPY requirements.txt $APPLICATION_ROOT
+COPY kubernetes-101/requirements.txt $APPLICATION_ROOT
 RUN pip install -r requirements.txt
 
 COPY . $APPLICATION_ROOT
