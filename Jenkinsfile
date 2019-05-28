@@ -102,6 +102,7 @@ pipeline {
                                 sh 'rake spec:18.191.198.18'
                                 sh 'rake spec:18.218.237.243'
                                 sh 'rake spec:18.191.104.43'
+                            }
                         }	
                     }	
                 }	
