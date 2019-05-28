@@ -1,8 +1,8 @@
-ansible_ssh_user: rocket
+ansible_ssh_user: ubuntu
 ansible_connection: ssh
 ansible_python_interpreter: /usr/bin/python3
 
-username: "rocket"
+username: "ubuntu"
 
 DD_API_KEY: !vault |
           $ANSIBLE_VAULT;1.1;AES256
