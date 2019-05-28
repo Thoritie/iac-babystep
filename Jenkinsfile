@@ -77,8 +77,9 @@ pipeline {
                         sh './set-context.sh'
 
                         dir('deployments') {
-                            sh 'kubectl apply -f db.yml'
-                            sh "cat app.yml | sed 's/{{COMMIT}}/${GIT_COMMIT.take(6)}/g' | kubectl apply -f -"
+                            sh 'kubectl get node'
+                            // sh 'kubectl apply -f db.yml'
+                            // sh "cat app.yml | sed 's/{{COMMIT}}/${GIT_COMMIT.take(6)}/g' | kubectl apply -f -"
                         }
                     }
                 }
