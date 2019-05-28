@@ -3,4 +3,4 @@ terraform.*
 
 certificate/
 
-
+.DS_Store
