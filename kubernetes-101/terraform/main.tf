@@ -307,7 +307,7 @@ resource "aws_instance" "k8s_pronto_world_dev_nfs" {
 }
 
 data "template_file" "inventory" {
-    template = "${file("templates/inventory.tpl")}"
+    template = "${file("../ansible/inventory.tpl")}"
 
     depends_on = [
         "aws_eip_association.k8s_pronto_world_dev_master_ip",
