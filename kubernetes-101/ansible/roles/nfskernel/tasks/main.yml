@@ -24,7 +24,7 @@
 
 - name: copy export file
   copy:
-    src: "{{ path_to_file }}/nfs-exports"
+    src: "nfs-exports"
     dest: /etc/exports
 
 - name: create nfs table
