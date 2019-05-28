@@ -84,5 +84,43 @@ pipeline {
                 }
             }
         }
+
+        stage('Run tests') {	
+            parallel {	
+                stage('Run Serverspec Tests') {
+                    agent {
+                        docker {
+                            image 'ruby:2.3.6'
+                        }
+                    }
+                    steps {	
+                        dir('kubernetes-101/serverspec') {
+                            sh 'bundle'
+                            withCredentials([
+                                sshUserPrivateKey(credentialsId: 'credential-private-key', keyFileVariable: 'SSH_PRIVATE_KEY')
+                            ]) {
+                                sh 'rake spec:18.191.198.18'
+                                sh 'rake spec:18.218.237.243'
+                                sh 'rake spec:18.191.104.43'
+                        }	
+                    }	
+                }	
+                stage('Run Acceptance Tests') {	
+                    agent {
+                        docker {
+                            image 'cypress/base:ubuntu16'
+                            args '-u root'
+                        }
+                    }	
+                    steps {	
+                        dir('kubernetes-101/cypress') {	
+                            sh 'npm install'
+                            sh './node_modules/.bin/cypress install'
+                            sh "./node_modules/.bin/cypress run
+                        }	
+                    }	
+                }	
+            }	
+        }
     }
 }
