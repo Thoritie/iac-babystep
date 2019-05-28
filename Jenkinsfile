@@ -63,7 +63,7 @@ pipeline {
                 }
             }
             steps {
-                dir('k8s') {
+                dir('kubernetes-101/k8s') {
                     withCredentials([
                         string(credentialsId: 'certificate-authority-data', variable: 'CERTIFICATE_AUTHORITY_DATA'),
                         string(credentialsId: 'client-key-data', variable: 'CLIENT_KEY_DATA'),
