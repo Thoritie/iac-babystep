@@ -11,7 +11,7 @@ spec:
     - ReadWriteMany
   nfs:
     path: /var/docker/db/
-    server: 108.128.241.217
+    server: 18.191.104.43
   persistentVolumeReclaimPolicy: Retain
 
 ---
@@ -29,7 +29,7 @@ spec:
     - ReadWriteMany
   nfs:
     path: /var/docker/static/assets/
-    server: 108.128.241.217
+    server: 18.191.104.43
   persistentVolumeReclaimPolicy: Retain
 
 ---
@@ -47,7 +47,7 @@ spec:
     - ReadWriteMany
   nfs:
     path: /var/docker/static/media/
-    server: 108.128.241.217
+    server: 18.191.104.43
   persistentVolumeReclaimPolicy: Retain
 
 ---
@@ -65,5 +65,5 @@ spec:
     - ReadWriteMany
   nfs:
     path: /var/docker/logs
-    server: 108.128.241.217
+    server: 18.191.104.43
   persistentVolumeReclaimPolicy: Retain
