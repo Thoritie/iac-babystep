@@ -78,7 +78,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: roseth/thorkube:1.1
+          image: roseth/seakube:{{COMMIT}}
           ports:
           - containerPort: 8000
           env:
