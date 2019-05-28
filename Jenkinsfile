@@ -33,64 +33,51 @@ pipeline {
             parallel {
                 stage('Build App Image') {
                     steps {
-                        sh "docker build -t roseth/seakube:${GIT_COMMIT.take(6)} -f Dockerfile ."
+                        sh "docker build -t roseth/seakube:${GIT_COMMIT.take(6)} -f kubernetes-101/Dockerfile ."
                         sh "docker tag roseth/seakube:${GIT_COMMIT.take(6)} roseth/seakube:stable"
                     }
                 }
             }
         }
 
+         stage('Push Stable Images') {
+            parallel {
+                stage('Push App Image') {
+                    steps {
+                        sh "docker push roseth/seakube:${GIT_COMMIT.take(6)}"
+                    }
+                }
+            }
+        }
 
-        // stage('Deploy Dev Server Kubernetes') {
-        //     stages {
-        //         stage('Pull Image') {
-        //             agent {
-        //                 docker {
-        //                     image 'stephdw/jenkins-ansible'
-        //                 }
-        //             }
-        //             steps {
-        //                 dir('ansible') {
-        //                     withCredentials([
-        //                         sshUserPrivateKey(credentialsId: 'rocket-ssh-credential', keyFileVariable: 'SSH_PRIVATE_KEY')
-        //                     ]) {
-        //                         sh "ansible-playbook -i development playbooks/pull_image_kubernetes_node.yml --private-key=${SSH_PRIVATE_KEY} --extra-vars 'commit=${GIT_COMMIT.take(6)}'"
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //         stage('Deploy Dev Server'){
-        //             agent {
-        //                 docker {
-        //                     image 'roffe/kubectl'
-        //                     args '-u root'
-        //                 }
-        //             }
-        //             steps {
-        //                 dir('k8s/dev') {
-        //                     withCredentials([
-        //                         string(credentialsId: 'pronto-world-certificate-authority-data', variable: 'PRONTO_WORLD_CERTIFICATE_AUTHORITY_DATA'),
-        //                         string(credentialsId: 'pronto-world-client-key-data', variable: 'PRONTO_WORLD_CLIENT_KEY_DATA'),
-        //                         string(credentialsId: 'pronto-world-client-certificate-data', variable: 'PRONTO_WORLD_CLIENT_CERTIFICATE_DATA')
-        //                     ]) {
+        stage('Deploy Dev Server'){
+            agent {
+                docker {
+                    image 'roffe/kubectl'
+                    args '-u root'
+                }
+            }
+            steps {
+                dir('k8s/dev') {
+                    withCredentials([
+                        string(credentialsId: 'certificate-authority-data', variable: 'CERTIFICATE_AUTHORITY_DATA'),
+                        string(credentialsId: 'client-key-data', variable: 'CLIENT_KEY_DATA'),
+                        string(credentialsId: 'client-certificate-data', variable: 'CLIENT_CERTIFICATE_DATA')
+                    ]) {
 
-        //                         sh 'echo $PRONTO_WORLD_CERTIFICATE_AUTHORITY_DATA > certificate/pronto_world_certificate_authority_data'
-        //                         sh 'echo $PRONTO_WORLD_CLIENT_KEY_DATA > certificate/pronto_world_client_key_data'
-        //                         sh 'echo $PRONTO_WORLD_CLIENT_CERTIFICATE_DATA > certificate/pronto_world_client_certificate_data'
+                        sh 'echo $CERTIFICATE_AUTHORITY_DATA > certificate/pronto_world_certificate_authority_data'
+                        sh 'echo $CLIENT_KEY_DATA > certificate/pronto_world_client_key_data'
+                        sh 'echo $CLIENT_CERTIFICATE_DATA > certificate/pronto_world_client_certificate_data'
 
-        //                         sh './set-context.sh'
+                        sh './set-context.sh'
 
-        //                         dir('deployments') {
-        //                             sh "cat app.yml | sed 's/{{COMMIT}}/${GIT_COMMIT.take(6)}/g' | kubectl apply -f -"
-        //                             sh "cat dynalite.yml | sed 's/{{COMMIT}}/${GIT_COMMIT.take(6)}/g' | kubectl apply -f -"
-        //                             sh 'kubectl apply -f db.yml'
-        //                             sh 'kubectl apply -f elasticsearch.yml'
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+                        dir('deployments') {
+                            sh 'kubectl apply -f db.yml'
+                            sh "cat app.yml | sed 's/{{COMMIT}}/${GIT_COMMIT.take(6)}/g' | kubectl apply -f -"
+                        }
+                    }
+                }
+            }
+        }
     }
 }
