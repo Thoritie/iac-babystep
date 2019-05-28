@@ -78,11 +78,6 @@ resource "aws_route_table" "k8s_pronto_world_dev_public_route_table" {
         nat_gateway_id = "${aws_internet_gateway.k8s_pronto_world_dev_internet_gateway.id}"
     }
 
-    route {
-        cidr_block                = "10.254.248.0/21"
-        vpc_peering_connection_id = "${aws_vpc_peering_connection.bash_station.id}"
-    }
-
     tags = {
         Name         = "k8s-pronto-world-dev-public-route-table"
         environment  = "dev"
@@ -218,9 +213,9 @@ resource "aws_instance" "k8s_pronto_world_dev_master" {
         "${aws_security_group.allow_all_tpc_and_udp.id}"
     ]
 
-    ami           = "ami-08d658f84a6d84a80"
+    ami           = "ami-0c55b159cbfafe1f0"
     instance_type = "t2.medium"
-    key_name      = "rocket-ssh-credential"
+    key_name      = "thoritie"
     associate_public_ip_address = true
 
     root_block_device {
@@ -250,9 +245,9 @@ resource "aws_instance" "k8s_pronto_world_dev_worker" {
         "${aws_security_group.allow_all_tpc_and_udp.id}"
     ]
 
-    ami           = "ami-08d658f84a6d84a80"
+    ami           = "ami-0c55b159cbfafe1f0"
     instance_type = "t2.medium"
-    key_name      = "rocket-ssh-credential"
+    key_name      = "thoritie"
     associate_public_ip_address = true
 
     root_block_device {
@@ -282,9 +277,9 @@ resource "aws_instance" "k8s_pronto_world_dev_nfs" {
         "${aws_security_group.allow_all_tpc_and_udp.id}"
     ]
 
-    ami           = "ami-08d658f84a6d84a80"
+    ami           = "ami-0c55b159cbfafe1f0"
     instance_type = "t2.medium"
-    key_name      = "rocket-ssh-credential"
+    key_name      = "thoritie"
     associate_public_ip_address = true
 
     root_block_device {
@@ -310,15 +305,15 @@ data "template_file" "inventory" {
     template = "${file("../ansible/inventory.tpl")}"
 
     depends_on = [
-        "aws_eip_association.k8s_pronto_world_dev_master_ip",
-        "aws_eip_association.k8s_pronto_world_dev_worker_ip",
-        "aws_eip_association.k8s_pronto_world_dev_nfs_ip",
+        "aws_instance.k8s_pronto_world_dev_master",
+        "aws_instance.k8s_pronto_world_dev_worker",
+        "aws_instance.k8s_pronto_world_dev_nfs",
     ]
 
     vars {
-        master_node = "${aws_eip.k8s_pronto_world_dev_instance_ip_master.public_ip}"
-        worker_node = "${aws_eip.k8s_pronto_world_dev_instance_ip_worker.public_ip}"
-        nfs_node    = "${aws_eip.k8s_pronto_world_dev_instance_ip_nfs.public_ip}"
+        master_node = "${aws_instance.k8s_pronto_world_dev_master.public_ip}"
+        worker_node = "${aws_instance.k8s_pronto_world_dev_worker.public_ip}"
+        nfs_node    = "${aws_instance.k8s_pronto_world_dev_nfs.public_ip}"
     }
 }
 
