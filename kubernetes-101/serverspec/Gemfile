@@ -1,0 +1,7 @@
+source 'https://rubygems.org' do
+  gem 'serverspec'
+  gem 'rake'
+  gem 'ed25519'
+  gem 'bcrypt_pbkdf'
+  ruby '2.3.6'
+end
