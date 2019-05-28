@@ -17,9 +17,6 @@ pipeline {
                     }	
                 }	
                 stage('static analysis') {	
-                    agent {	
-                        docker { image 'hoto/flake8' }	
-                    }	
                     steps {	
                         dir('DevopsKata') {	
                             sh 'echo static analysis'	
