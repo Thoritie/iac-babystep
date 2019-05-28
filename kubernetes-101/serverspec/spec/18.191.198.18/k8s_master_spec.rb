@@ -48,6 +48,6 @@ describe command('kubectl get pvc') do
   its(:stdout) { should match /static-media-pvc.*static-media-pv.*RWX/ }
 end
 
-describe command('kubectl get secret') do
+describe command('kubectl get configmap') do
   its(:stdout) { should match /env-secrets/ }
 end
