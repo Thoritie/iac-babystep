@@ -85,7 +85,7 @@ pipeline {
             }
         }
 
-        stage('Run tests') {	
+        stage('Run Acceptance tests') {	
             parallel {	
                 stage('Run Serverspec Tests') {
                     agent {
