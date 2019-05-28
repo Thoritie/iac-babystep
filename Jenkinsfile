@@ -44,7 +44,12 @@ pipeline {
             parallel {
                 stage('Push App Image') {
                     steps {
-                        sh "docker push roseth/seakube:${GIT_COMMIT.take(6)}"
+                        withCredentials([
+                            string(credentialsId: 'docker-password', variable: 'DOCKER_PASS'),
+                        ]) {
+                            sh "docker login -u=roseth -p ${DOCKER_PASS}"
+                            sh "docker push roseth/seakube:${GIT_COMMIT.take(6)}"
+                        }
                     }
                 }
             }
@@ -58,7 +63,7 @@ pipeline {
                 }
             }
             steps {
-                dir('k8s/dev') {
+                dir('k8s') {
                     withCredentials([
                         string(credentialsId: 'certificate-authority-data', variable: 'CERTIFICATE_AUTHORITY_DATA'),
                         string(credentialsId: 'client-key-data', variable: 'CLIENT_KEY_DATA'),
